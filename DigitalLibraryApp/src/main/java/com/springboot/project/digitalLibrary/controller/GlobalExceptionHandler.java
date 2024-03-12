@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import com.springboot.project.digitalLibrary.entity.ErrorResponse;
 import com.springboot.project.digitalLibrary.entity.ResourceNotFoundException;
 
@@ -26,14 +25,14 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ExceptionHandler(MissingServletRequestParameterException.class)
-	public ResponseEntity<ErrorResponse> handleVlaidationException(
+	public ResponseEntity<ErrorResponse> handleValidationException(
 			MissingServletRequestParameterException exception){
 		ErrorResponse error = new ErrorResponse();
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
 		error.setMessage("Parameter is missing : "+exception.getParameterName());
 		error.setDateTime(LocalDateTime.now());
 		
-		return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler
