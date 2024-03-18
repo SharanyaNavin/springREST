@@ -1,4 +1,4 @@
-package com.springboot.project.digitalLibrary.entity;
+package com.springboot.project.digitalLibrary.exception;
 
 public class ResourceNotFoundException extends RuntimeException{
 

@@ -17,6 +17,7 @@ import com.springboot.project.digitalLibrary.entity.Transaction;
 import com.springboot.project.digitalLibrary.service.TransactionService;
 
 @RestController
+@RequestMapping("/transact")
 public class TransactionController {
 	private TransactionService service;
 	
@@ -25,32 +26,34 @@ public class TransactionController {
 		super();
 		this.service = service;
 	}
-	@GetMapping("/transact/{transactionId}")
+	@GetMapping("/{transactionId}")
 	public ResponseEntity<Transaction> findById(@PathVariable int transactionId){
 		Transaction transaction= service.findTransactionById(transactionId);
 		return ResponseEntity.status(HttpStatus.OK).body(transaction);
 	}
 	
-	@GetMapping("/transact/bookId/{bookId}")
+	@GetMapping("/bookId/{bookId}")
 	public ResponseEntity<List<Transaction>> findByBookId(@PathVariable int bookId){
 		List<Transaction> transactionList= service.findTransactionByBookId(bookId);
 		return ResponseEntity.status(HttpStatus.OK).body(transactionList);
 	}
 
-	@GetMapping("/transact/cardId/{cardId}")
+	@GetMapping("/cardId/{cardId}")
 	public ResponseEntity<List<Transaction>> findByCardId(@PathVariable int cardId){
 		List<Transaction> transactionList= service.findTransactionByCardId(cardId);
 		return ResponseEntity.status(HttpStatus.OK).body(transactionList);
 	}
 	
-	@GetMapping("/transact/issueBook")
-	public ResponseEntity<String> issueBook(@RequestParam(required = true)int bookId,@RequestParam(required = true)int cardId) {
+	@GetMapping("/issueBook")
+	public ResponseEntity<String> issueBook(@RequestParam(required = true)int bookId,
+			@RequestParam(required = true)int cardId) {
 		String message= service.issueBook(bookId, cardId);
 		return ResponseEntity.status(HttpStatus.OK).body(message);
 		
 	}
-	@GetMapping("/transact/returnBook")
-	public ResponseEntity<String> returnBook(@RequestParam(required = true) int bookId,@RequestParam(required = true) int cardId) {
+	@GetMapping("/returnBook")
+	public ResponseEntity<String> returnBook(@RequestParam(required = true) int bookId,
+			@RequestParam(required = true) int cardId) {
 		String message=service.returnBook(bookId, cardId);
 		return ResponseEntity.status(HttpStatus.OK).body(message);
 	}

@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.springboot.project.digitalLibrary.entity.ResourceNotFoundException;
 import com.springboot.project.digitalLibrary.entity.Student;
+import com.springboot.project.digitalLibrary.exception.ResourceNotFoundException;
 import com.springboot.project.digitalLibrary.repository.StudentRepository;
 
 import jakarta.transaction.Transactional;

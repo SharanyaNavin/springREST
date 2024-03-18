@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.springboot.project.digitalLibrary.entity.Author;
-import com.springboot.project.digitalLibrary.entity.ResourceNotFoundException;
+import com.springboot.project.digitalLibrary.exception.ResourceNotFoundException;
 import com.springboot.project.digitalLibrary.service.BookAuthorService;
 
 @RestController
+@RequestMapping("/author")
 public class AuthorController {
 
 	private BookAuthorService service;
@@ -27,28 +29,28 @@ public class AuthorController {
 		this.service = service;
 	}
 	
-	@GetMapping("/author")
+	@GetMapping
 	public ResponseEntity<List<Author>> findAll(){
 		List<Author> authorList=service.findAuthors();
-		return ResponseEntity.status(HttpStatus.OK).body(authorList);
+		return ResponseEntity.ok(authorList);
 	}
 	
-	@GetMapping("/author/{authorId}")
+	@GetMapping("/{authorId}")
 	public ResponseEntity<Author> findById(@PathVariable int authorId){
 		Author author=service.findAuthorById(authorId);
-		return ResponseEntity.status(HttpStatus.OK).body(author);
+		return ResponseEntity.ok(author);
 	}
-	@PostMapping("/author")
+	@PostMapping
 	public ResponseEntity<Author> create(@RequestBody Author author) {
 		Author newAuthor= service.createAuthor(author);
-		return ResponseEntity.status(HttpStatus.CREATED).body(newAuthor);
+		return new ResponseEntity<>(newAuthor, HttpStatus.CREATED);
 	}
-	@PutMapping("/author")
+	@PutMapping
 	public ResponseEntity<Author> update(@RequestBody Author author) {
 		Author editedAuthor= service.createAuthor(author);
-		return ResponseEntity.status(HttpStatus.OK).body(editedAuthor);
+		return ResponseEntity.ok(editedAuthor);
 	}
-	@DeleteMapping("/author/{authorId}")
+	@DeleteMapping("/{authorId}")
 	public ResponseEntity<String> remove (@PathVariable int authorId) {
 		Author author= service.findAuthorById(authorId);
 		if(author==null) {
@@ -56,7 +58,7 @@ public class AuthorController {
 		}
 		service.removeAuthor(authorId);
 		String message ="deleted Author with id: "+authorId;
-		return ResponseEntity.status(HttpStatus.OK).body(message);
+		return ResponseEntity.ok(message);
 	}
 	
 	

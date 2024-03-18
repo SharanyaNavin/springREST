@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.springboot.project.digitalLibrary.entity.Book;
 import com.springboot.project.digitalLibrary.entity.Card;
-import com.springboot.project.digitalLibrary.entity.ResourceNotFoundException;
 import com.springboot.project.digitalLibrary.entity.Student;
 import com.springboot.project.digitalLibrary.entity.Transaction;
+import com.springboot.project.digitalLibrary.exception.ResourceNotFoundException;
 import com.springboot.project.digitalLibrary.repository.BookRepository;
 import com.springboot.project.digitalLibrary.repository.CardRepository;
 import com.springboot.project.digitalLibrary.repository.TransactionRepository;
@@ -25,7 +25,8 @@ public class TransactionService {
 	private CardRepository cardRepository;
 
 	@Autowired
-	public TransactionService(TransactionRepository transactionRepository, BookRepository bookRepository,
+	public TransactionService(TransactionRepository transactionRepository, 
+			BookRepository bookRepository,
 			CardRepository cardRepository) {
 		super();
 		this.transactionRepository = transactionRepository;
@@ -66,32 +67,36 @@ public class TransactionService {
 		Book bookDetails = findBookById(bookId);
 
 		String status = "success";
-		List<Transaction> activeTransactions = transactionRepository.findByCardIdAndStatus(cardId, status);
+		List<Transaction> activeTransactions = transactionRepository.
+				                               findByCardIdAndStatus(cardId, status);
 
-		if (cardDetails.getStatus().equals("active") && bookDetails.isAvailable() && activeTransactions.size() < 3) {
+		if (cardDetails.getStatus().equals("active") &&
+				bookDetails.isAvailable() && 
+				activeTransactions.size() < 3) {
 
 			// 1. create a new transaction
-			Transaction issueBookTransaction = new Transaction(LocalDate.now(), LocalDate.now().plusMonths(3), true,
-					false, 0.0, "success", LocalDate.now(), null);
-
-			issueBookTransaction.setCardId(cardId);
-			issueBookTransaction.setBookId(bookId);
+			Transaction issueBookTransaction = Transaction.builder().
+					                        bookDueDate(LocalDate.now().plusMonths(3)).
+					                        isIssued(true).
+					                        status("success").
+					                        bookId(bookId).
+					                        cardId(cardId).
+					                        build();
 
 			transactionRepository.save(issueBookTransaction);
 
-			// 2.mark as book unavailable
+			// 2.mark book as unavailable
 			bookDetails.setAvailable(false);
 
 			return "Book Issued";
 
 		} else {
 
-			Transaction failedTransaction = new Transaction();
-			failedTransaction.setCreatedOn(LocalDate.now());
-			failedTransaction.setTransactionDate(LocalDate.now());
-			failedTransaction.setStatus("failure");
-			failedTransaction.setCardId(cardId);
-			failedTransaction.setBookId(bookId);
+			Transaction failedTransaction = Transaction.builder().
+					                        status("failure").
+					                        cardId(cardId).
+					                        bookId(bookId).
+					                        build();
 
 			transactionRepository.save(failedTransaction);
 
@@ -105,13 +110,18 @@ public class TransactionService {
 		Card cardDetails = findCardById(cardId);
 		Book bookDetails = findBookById(bookId);
 
-		Transaction returnBookTransaction = transactionRepository.findByBookIdAndCardId(bookId, cardId);
+		Transaction returnBookTransaction = transactionRepository.
+				                findByBookIdCardIdAndStatus(bookId, cardId,"success");
 
-		if (cardDetails.getStatus().equals("active") && returnBookTransaction != null) {
-			// 1.mark book as available
+		if (cardDetails.getStatus().equals("active") && 
+				returnBookTransaction != null) {
+		
+		// 1.mark book as available
+			
 			bookDetails.setAvailable(true);
 
-			// 2.calculate fine
+		// 2.calculate fine
+			
 			LocalDate bookDueDate = returnBookTransaction.getBookDueDate();
 			LocalDate todayDate = LocalDate.now();
 
@@ -120,10 +130,10 @@ public class TransactionService {
 				fineAmount = daysBetween * 5;
 				returnBookTransaction.setFineAmount(fineAmount);
 			}
-			// 3.set cardId to null
+		// 3.set cardId to null
+			
 			returnBookTransaction.setCardId(null);
 			returnBookTransaction.setReturned(true);
-			returnBookTransaction.setUpdatedOn(todayDate);
 
 			transactionRepository.save(returnBookTransaction);
 		}
@@ -147,13 +157,15 @@ public class TransactionService {
 	}
 
 	public List<Transaction> findTransactionByBookId(int bookId) {
-		List<Transaction> bookTransactions = transactionRepository.findByBookId(bookId);
+		List<Transaction> bookTransactions = transactionRepository.
+				findByBookId(bookId);
 
 		return bookTransactions;
 	}
 
 	public List<Transaction> findTransactionByCardId(int cardId) {
-		List<Transaction> cardTransactions = transactionRepository.findByCardId(cardId);
+		List<Transaction> cardTransactions = transactionRepository.
+				findByCardId(cardId);
 
 		return cardTransactions;
 	}

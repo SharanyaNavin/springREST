@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.springboot.project.digitalLibrary.entity.Book;
-import com.springboot.project.digitalLibrary.entity.ResourceNotFoundException;
+import com.springboot.project.digitalLibrary.exception.ResourceNotFoundException;
 import com.springboot.project.digitalLibrary.service.BookAuthorService;
 
 @RestController
+@RequestMapping("/book")
 public class BookController {
 
 	private BookAuthorService service;
@@ -27,27 +29,27 @@ public class BookController {
 		this.service = service;
 	}
 	
-	@GetMapping("/book")
+	@GetMapping
 	public ResponseEntity<List<Book>> findAll(){
 		List<Book> bookList=service.findBooks();
 		return ResponseEntity.status(HttpStatus.OK).body(bookList);
 	}
-	@GetMapping("/book/{bookId}")
+	@GetMapping("/{bookId}")
 	public ResponseEntity<Book> findById(@PathVariable int bookId){
 		Book book= service.findBookById(bookId);
 		return ResponseEntity.status(HttpStatus.OK).body(book);
 	}
-	@PostMapping("/book")
+	@PostMapping
 	public ResponseEntity<Book> create(@RequestBody Book book) {
 		Book newBook= service.createBook(book);
 		return ResponseEntity.status(HttpStatus.CREATED).body(newBook);
 	}
-	@PutMapping("/book")
+	@PutMapping
 	public ResponseEntity<Book> update(@RequestBody Book book) {
 		Book editedBook= service.createBook(book);
 		return ResponseEntity.status(HttpStatus.OK).body(editedBook);
 	}
-	@DeleteMapping("/book/{bookId}")
+	@DeleteMapping("/{bookId}")
 	public ResponseEntity<String> remove (@PathVariable int bookId) {
 		Book book= service.findBookById(bookId);
 		if(book==null) {

@@ -1,4 +1,4 @@
-package com.springboot.project.digitalLibrary.controller;
+package com.springboot.project.digitalLibrary.exception;
 
 import java.time.LocalDateTime;
 
@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import com.springboot.project.digitalLibrary.entity.ErrorResponse;
-import com.springboot.project.digitalLibrary.entity.ResourceNotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

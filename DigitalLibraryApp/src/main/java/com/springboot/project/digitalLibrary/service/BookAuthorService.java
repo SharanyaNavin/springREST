@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.springboot.project.digitalLibrary.entity.Author;
 import com.springboot.project.digitalLibrary.entity.Book;
-import com.springboot.project.digitalLibrary.entity.ResourceNotFoundException;
+import com.springboot.project.digitalLibrary.exception.ResourceNotFoundException;
 import com.springboot.project.digitalLibrary.repository.AuthorRepository;
 import com.springboot.project.digitalLibrary.repository.BookRepository;
 
@@ -32,6 +32,7 @@ public class BookAuthorService {
 	}
 
 	public Book findBookById(int id) {
+		
 		Optional<Book> result = bookRepository.findById(id);
 
 		Book book = null;
