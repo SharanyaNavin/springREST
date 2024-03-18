@@ -2,13 +2,10 @@ package com.springboot.project.digitalLibrary.service;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.springboot.project.digitalLibrary.repository.ReportRepository;
 import com.springboot.project.digitalLibrary.repository.StudentRepository;
-import com.springboot.project.digitalLibrary.repository.TransactionRepository;
 
 @Service
 public class ReportService {
@@ -18,21 +15,23 @@ public class ReportService {
 	private StudentRepository studentRepository;
 
 	@Autowired
-	public ReportService(ReportRepository reportRepository, StudentRepository studentRepository) {
+	public ReportService(ReportRepository reportRepository, 
+			StudentRepository studentRepository) {
 		super();
 		this.reportRepository = reportRepository;
 		this.studentRepository = studentRepository;
 	}
 	// 1.All books issued in between a date range
-	
-	public List<Object[]> findBooksIssuedByDateRange(LocalDate startDate,LocalDate endDate){
-		List<Object[]> books=reportRepository.findBooksIssuedByDateRange(startDate, endDate);
+	public List<Object[]> findBooksIssuedByDateRange(LocalDate startDate,
+			                                         LocalDate endDate){
+		List<Object[]> books=reportRepository.
+				             findBooksIssuedByDateRange(startDate, endDate);
 		return books;
 	}
 	
 	//2. Total fine collected in between a date range
-	
 	public int findFineCollectedByDateRange(LocalDate start, LocalDate end) {
+		
 		int totalFineAmount=reportRepository.findFineCollectedByDateRange(start, end);
 		return totalFineAmount;
 	}

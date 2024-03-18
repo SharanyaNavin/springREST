@@ -3,12 +3,10 @@ package com.springboot.project.digitalLibrary.service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.springboot.project.digitalLibrary.entity.Book;
 import com.springboot.project.digitalLibrary.entity.Card;
-import com.springboot.project.digitalLibrary.entity.Student;
 import com.springboot.project.digitalLibrary.entity.Transaction;
 import com.springboot.project.digitalLibrary.exception.ResourceNotFoundException;
 import com.springboot.project.digitalLibrary.repository.BookRepository;
@@ -35,31 +33,22 @@ public class TransactionService {
 	}
 
 	public Book findBookById(int bookId) {
-		Optional<Book> result = bookRepository.findById(bookId);
 
-		Book book = null;
-
-		if (result.isPresent())
-			book = result.get();
-		else
-			throw new ResourceNotFoundException("Book not found id:" + bookId);
-
+		Book book = bookRepository.findById(bookId)
+		.orElseThrow(()->new ResourceNotFoundException("Book not found id:" + bookId));
+		
 		return book;
 	}
 
 	public Card findCardById(int cardId) {
-		Optional<Card> result = cardRepository.findById(cardId);
 
-		Card card = null;
-
-		if (result.isPresent())
-			card = result.get();
-		else
-			throw new ResourceNotFoundException("Card not found id:" + cardId);
+		Card card = cardRepository.findById(cardId)
+		.orElseThrow(()->new ResourceNotFoundException("Card not found id:" + cardId));
 
 		return card;
 	}
-
+	
+	//issue book 
 	@Transactional
 	public String issueBook(int bookId, int cardId) {
 
@@ -104,6 +93,7 @@ public class TransactionService {
 		}
 	}
 
+	//return book 
 	public String returnBook(int bookId, int cardId) {
 
 		double fineAmount = 0;
@@ -126,10 +116,12 @@ public class TransactionService {
 			LocalDate todayDate = LocalDate.now();
 
 			if (todayDate.isAfter(bookDueDate)) {
+				
 				long daysBetween = ChronoUnit.DAYS.between(bookDueDate, todayDate);
 				fineAmount = daysBetween * 5;
 				returnBookTransaction.setFineAmount(fineAmount);
 			}
+			
 		// 3.set cardId to null
 			
 			returnBookTransaction.setCardId(null);
@@ -142,30 +134,27 @@ public class TransactionService {
 
 	}
 
+	//find transaction by id
 	public Transaction findTransactionById(int id) {
 
-		Optional<Transaction> result = transactionRepository.findById(id);
-
-		Transaction transaction = null;
-
-		if (result.isPresent())
-			transaction = result.get();
-		else
-			throw new ResourceNotFoundException("Transaction not found id:" + id);
-
+		Transaction transaction = transactionRepository.findById(id).
+	   orElseThrow(()->new ResourceNotFoundException("transaction not found id:" +id));
+				
 		return transaction;
 	}
 
+	//find transaction by bookId
 	public List<Transaction> findTransactionByBookId(int bookId) {
 		List<Transaction> bookTransactions = transactionRepository.
-				findByBookId(bookId);
+				                             findByBookId(bookId);
 
 		return bookTransactions;
 	}
 
+	//find transaction by cardId
 	public List<Transaction> findTransactionByCardId(int cardId) {
 		List<Transaction> cardTransactions = transactionRepository.
-				findByCardId(cardId);
+				                              findByCardId(cardId);
 
 		return cardTransactions;
 	}

@@ -1,11 +1,8 @@
 package com.springboot.project.digitalLibrary.service;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.springboot.project.digitalLibrary.entity.Student;
 import com.springboot.project.digitalLibrary.exception.ResourceNotFoundException;
 import com.springboot.project.digitalLibrary.repository.StudentRepository;
@@ -23,20 +20,16 @@ public class StudentService {
 		this.studentRepository = studentRepository;
 	}
 	
+	//Student CRUD operations
+	
 	public List<Student> findStudents(){
 		return studentRepository.findAll();		
 	}
 	
 	public Student findStudentById(int id) {
-		
-		Optional<Student> result= studentRepository.findById(id);
-		
-		Student student =null;
-		
-		if(result.isPresent())
-			student= result.get();
-		else
-			throw new ResourceNotFoundException("student not found id:"+id);
+
+		Student student = studentRepository.findById(id)
+		.orElseThrow(()->new ResourceNotFoundException("Student not found id:" + id));
 		
 		return student;
 	}	
@@ -48,6 +41,10 @@ public class StudentService {
 	
 	@Transactional
 	public void removeStudent(int id) {
+
+		Student student = studentRepository.findById(id)
+		.orElseThrow(()->new ResourceNotFoundException("Student not found id:" + id));
+		
 		 studentRepository.deleteById(id);
 	}
 

@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<ErrorResponse> handleException(ResourceNotFoundException exception ){
-		ErrorResponse error = new ErrorResponse();
-		error.setStatus(HttpStatus.NOT_FOUND.value());
-		error.setMessage(exception.getMessage());
-		error.setDateTime(LocalDateTime.now());
+	public ResponseEntity<ErrorResponse> handleException(
+			                                  ResourceNotFoundException exception ){
+		
+		ErrorResponse error = ErrorResponse.builder().
+				              status(HttpStatus.NOT_FOUND.value()).
+				              message(exception.getMessage()).
+				              dateTime(LocalDateTime.now()).
+				              build();
 		
 		return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
 		
@@ -25,20 +28,24 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	public ResponseEntity<ErrorResponse> handleValidationException(
 			MissingServletRequestParameterException exception){
-		ErrorResponse error = new ErrorResponse();
-		error.setStatus(HttpStatus.BAD_REQUEST.value());
-		error.setMessage("Parameter is missing : "+exception.getParameterName());
-		error.setDateTime(LocalDateTime.now());
+		
+		ErrorResponse error = ErrorResponse.builder().
+	                status(HttpStatus.BAD_REQUEST.value()).
+	                message("Parameter is missing : "+exception.getParameterName()).
+	                dateTime(LocalDateTime.now()).
+	                build();
 		
 		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleException(Exception exception ){
-		ErrorResponse error = new ErrorResponse();
-		error.setStatus(HttpStatus.BAD_REQUEST.value());
-		error.setMessage(exception.getMessage());
-		error.setDateTime(LocalDateTime.now());
+		
+		ErrorResponse error = ErrorResponse.builder().
+                              status(HttpStatus.BAD_REQUEST.value()).
+                              message(exception.getMessage()).
+                              dateTime(LocalDateTime.now()).
+                              build();
 		
 		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
 		

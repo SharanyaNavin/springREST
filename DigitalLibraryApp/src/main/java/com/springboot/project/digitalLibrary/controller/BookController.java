@@ -1,7 +1,6 @@
 package com.springboot.project.digitalLibrary.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.springboot.project.digitalLibrary.entity.Book;
-import com.springboot.project.digitalLibrary.exception.ResourceNotFoundException;
 import com.springboot.project.digitalLibrary.service.BookAuthorService;
 
 @RestController
@@ -31,33 +29,43 @@ public class BookController {
 	
 	@GetMapping
 	public ResponseEntity<List<Book>> findAll(){
+		
 		List<Book> bookList=service.findBooks();
-		return ResponseEntity.status(HttpStatus.OK).body(bookList);
+		
+		return ResponseEntity.ok(bookList);
 	}
+	
 	@GetMapping("/{bookId}")
 	public ResponseEntity<Book> findById(@PathVariable int bookId){
+		
 		Book book= service.findBookById(bookId);
-		return ResponseEntity.status(HttpStatus.OK).body(book);
+		
+		return ResponseEntity.ok(book);
 	}
+	
 	@PostMapping
 	public ResponseEntity<Book> create(@RequestBody Book book) {
+		
 		Book newBook= service.createBook(book);
-		return ResponseEntity.status(HttpStatus.CREATED).body(newBook);
+		
+		return new ResponseEntity<>(newBook, HttpStatus.CREATED);
 	}
+	
 	@PutMapping
 	public ResponseEntity<Book> update(@RequestBody Book book) {
+		
 		Book editedBook= service.createBook(book);
-		return ResponseEntity.status(HttpStatus.OK).body(editedBook);
+		
+		return ResponseEntity.ok(editedBook);
 	}
+	
 	@DeleteMapping("/{bookId}")
-	public ResponseEntity<String> remove (@PathVariable int bookId) {
-		Book book= service.findBookById(bookId);
-		if(book==null) {
-			throw new ResourceNotFoundException("Bookid not found"+bookId);
-		}
+	public ResponseEntity<String> remove(@PathVariable int bookId) {
+		
 		service.removeBook(bookId);
+		
 		String message= "deleted Book with id: "+bookId;
-		return ResponseEntity.status(HttpStatus.OK).body(message);
+		return ResponseEntity.ok(message);
 	}
 	
 }
