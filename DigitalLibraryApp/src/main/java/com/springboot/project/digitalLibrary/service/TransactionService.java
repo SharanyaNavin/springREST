@@ -99,19 +99,18 @@ public class TransactionService {
 		double fineAmount = 0;
 		Card cardDetails = findCardById(cardId);
 		Book bookDetails = findBookById(bookId);
-
+		
+		String status = "success";
 		Transaction returnBookTransaction = transactionRepository.
-				                findByBookIdCardIdAndStatus(bookId, cardId,"success");
+				                findByBookIdCardIdAndStatus(bookId, cardId,status);
 
 		if (cardDetails.getStatus().equals("active") && 
 				returnBookTransaction != null) {
 		
 		// 1.mark book as available
-			
 			bookDetails.setAvailable(true);
 
 		// 2.calculate fine
-			
 			LocalDate bookDueDate = returnBookTransaction.getBookDueDate();
 			LocalDate todayDate = LocalDate.now();
 
@@ -123,7 +122,6 @@ public class TransactionService {
 			}
 			
 		// 3.set cardId to null
-			
 			returnBookTransaction.setCardId(null);
 			returnBookTransaction.setReturned(true);
 
