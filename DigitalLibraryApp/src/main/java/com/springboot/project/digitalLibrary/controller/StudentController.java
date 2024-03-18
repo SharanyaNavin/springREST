@@ -3,6 +3,9 @@ package com.springboot.project.digitalLibrary.controller;
 import org.springframework.web.bind.annotation.RestController;
 import com.springboot.project.digitalLibrary.entity.Student;
 import com.springboot.project.digitalLibrary.service.StudentService;
+
+import jakarta.validation.Valid;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,7 +47,7 @@ public class StudentController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Student> create(@RequestBody Student student) {
+	public ResponseEntity<Student> create(@Valid @RequestBody Student student) {
 		
 		Student newStudent =service.createStudent(student);
 		
@@ -52,7 +55,7 @@ public class StudentController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Student> update(@RequestBody Student student) {
+	public ResponseEntity<Student> update(@Valid @RequestBody Student student) {
 		
 		Student editedStudent =service.createStudent(student);
 		

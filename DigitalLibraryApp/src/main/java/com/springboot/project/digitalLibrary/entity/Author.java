@@ -1,16 +1,13 @@
 package com.springboot.project.digitalLibrary.entity;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,9 +26,12 @@ public class Author {
 	@Column(name="id")
 	private int id;
 	
+	@NotEmpty
 	@Column(name="name")
 	private String name;
 	
+	@NotEmpty
+	@Email
 	@Column(name="email")
 	private String email;
 	

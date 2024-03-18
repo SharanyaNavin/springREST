@@ -2,14 +2,8 @@ package com.springboot.project.digitalLibrary.entity;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -55,5 +50,4 @@ public class Card {
 	@OneToMany
 	@JoinColumn(name="card_id")
 	private List<Transaction> transactions;
-
 }

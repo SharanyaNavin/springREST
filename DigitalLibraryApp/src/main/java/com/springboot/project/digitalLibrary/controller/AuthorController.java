@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.project.digitalLibrary.entity.Author;
 import com.springboot.project.digitalLibrary.service.BookAuthorService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/author")
 public class AuthorController {
@@ -44,7 +46,7 @@ public class AuthorController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Author> create(@RequestBody Author author) {
+	public ResponseEntity<Author> create(@Valid @RequestBody Author author) {
 		
 		Author newAuthor= service.createAuthor(author);
 		
@@ -52,7 +54,7 @@ public class AuthorController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Author> update(@RequestBody Author author) {
+	public ResponseEntity<Author> update(@Valid @RequestBody Author author) {
 		
 		Author editedAuthor= service.createAuthor(author);
 		

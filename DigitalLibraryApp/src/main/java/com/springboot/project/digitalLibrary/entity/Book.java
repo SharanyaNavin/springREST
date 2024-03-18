@@ -2,10 +2,7 @@ package com.springboot.project.digitalLibrary.entity;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +32,7 @@ public class Book {
 	@Column(name="id")
 	private int id;
 	
+	@NotEmpty
 	@Column(name="name")
 	private String name;
 	
@@ -44,12 +43,14 @@ public class Book {
 	@Column(name="number_of_pages")
 	private int numberOfPages;
 	
+	@NotEmpty
 	@Column(name="language")
 	private String language;
 	
 	@Column(name="available")
 	private boolean available;
-	
+
+	@NotEmpty
 	@Column(name="genre")
 	private String genre;
 	
