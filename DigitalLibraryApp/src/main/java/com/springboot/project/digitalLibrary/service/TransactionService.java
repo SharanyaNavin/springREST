@@ -92,10 +92,10 @@ public class TransactionService {
 			String message= "Book not issued";
 			if(activeTransactions.size() ==3)
 				return message+": Max limit reached";
-			else if(bookDetails.isAvailable()==false)
-				return message+": Book not available";
-			else
+			else if(cardDetails.getStatus().equals("inactive"))
 				return message+": card Inactive";
+			else
+				return message+": Book not available";
 		}
 	}
 
