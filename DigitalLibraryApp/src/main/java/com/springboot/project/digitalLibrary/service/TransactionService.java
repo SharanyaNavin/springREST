@@ -89,7 +89,13 @@ public class TransactionService {
 
 			transactionRepository.save(failedTransaction);
 
-			return "Book not issued";
+			String message= "Book not issued";
+			if(activeTransactions.size() ==3)
+				return message+": Max limit reached";
+			else if(bookDetails.isAvailable()==false)
+				return message+": Book not available";
+			else
+				return message+": card Inactive";
 		}
 	}
 
