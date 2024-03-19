@@ -131,16 +131,12 @@ public class TransactionService {
 		}
 		
 		else if (cardDetails.getStatus().equals("inactive")){
-			
 			return "Card Status is inactive";
-			
 		}
 		
 		else {
-			
 			return "No Transaction found for this bookId and cardId";
 		}
-
 	}
 
 	//find transaction by id
