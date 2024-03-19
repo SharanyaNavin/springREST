@@ -126,9 +126,20 @@ public class TransactionService {
 			returnBookTransaction.setReturned(true);
 
 			transactionRepository.save(returnBookTransaction);
+			
+			return "Book Returned and your fine amount is: $" + fineAmount;
 		}
-
-		return "Book Returned and your fine amount is: $" + fineAmount;
+		
+		else if (cardDetails.getStatus().equals("inactive")){
+			
+			return "Card Status is inactive";
+			
+		}
+		
+		else {
+			
+			return "No Transaction found for this bookId and cardId";
+		}
 
 	}
 
